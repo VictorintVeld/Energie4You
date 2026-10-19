@@ -5,23 +5,24 @@
              Title="Energie4You">
 
     <ScrollView>
-        <VerticalStackLayout Padding="25" Spacing="18">
+        <VerticalStackLayout Padding="25"
+                             Spacing="18">
 
             <Label Text="Energie4You"
                    FontSize="30"
                    FontAttributes="Bold"
                    TextColor="#512BD4"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center"/>
 
             <Label Text="Nieuwe defectmelding"
                    FontSize="22"
-                   FontAttributes="Bold" />
+                   FontAttributes="Bold"/>
 
-            <Label Text="Naam monteur" />
+            <Label Text="Naam monteur"/>
             <Entry x:Name="MonteurEntry"
-                   Placeholder="Vul je naam in" />
+                   Placeholder="Vul je naam in"/>
 
-            <Label Text="Categorie" />
+            <Label Text="Categorie"/>
             <Picker x:Name="CategoriePicker"
                     Title="Selecteer een categorie">
                 <Picker.Items>
@@ -32,15 +33,29 @@
                 </Picker.Items>
             </Picker>
 
-            <Label Text="Omschrijving defect" />
+            <Label Text="Omschrijving defect"/>
             <Editor x:Name="OmschrijvingEditor"
                     Placeholder="Beschrijf het defect"
-                    HeightRequest="120" />
+                    HeightRequest="120"/>
+
+
+            <Label Text="Foto van het defect"/>
+
+            <Button Text="Foto maken"
+                    BackgroundColor="#247BA0"
+                    TextColor="White"
+                    Clicked="OnFotoMakenClicked"/>
+
+            <Image x:Name="FotoPreview"
+                   HeightRequest="200"
+                   Aspect="AspectFit"
+                   IsVisible="False"/>
+
 
             <Button Text="Melding opslaan"
                     BackgroundColor="#512BD4"
                     TextColor="White"
-                    Clicked="OnOpslaanClicked" />
+                    Clicked="OnOpslaanClicked"/>
 
         </VerticalStackLayout>
     </ScrollView>
