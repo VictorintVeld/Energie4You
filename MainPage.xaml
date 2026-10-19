@@ -38,6 +38,17 @@
                     Placeholder="Beschrijf het defect"
                     HeightRequest="120"/>
 
+            <Label Text="Locatie van het defect"/>
+
+            <Button Text="GPS-locatie ophalen"
+                    BackgroundColor="#247BA0"
+                    TextColor="White"
+                    Clicked="OnGpsClicked"/>
+
+            <Label x:Name="LocatieLabel"
+                   Text="Nog geen locatie opgehaald"
+                   FontSize="14"
+                   TextColor="Gray"/>
 
             <Label Text="Foto van het defect"/>
 
@@ -50,7 +61,6 @@
                    HeightRequest="200"
                    Aspect="AspectFit"
                    IsVisible="False"/>
-
 
             <Button Text="Melding opslaan"
                     BackgroundColor="#512BD4"

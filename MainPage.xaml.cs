@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Media;
+using Microsoft.Maui.Devices.Sensors;
 namespace Energie4You;
 
 public partial class MainPage : ContentPage
@@ -70,5 +71,43 @@ public partial class MainPage : ContentPage
 				"OK");
 		}
 	}
+
+
+	private async void OnGpsClicked(object? sender, EventArgs e)
+	{
+		LocatieLabel.Text = "GPS-locatie wordt opgehaald...";
+
+		try
+		{
+			var toestemming = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+
+			if (toestemming != PermissionStatus.Granted)
+			{
+				LocatieLabel.Text = "Geen toestemming voor GPS.";
+				return;
+			}
+
+			var locatie = await Geolocation.Default.GetLocationAsync();
+
+			if (locatie != null)
+			{
+				LocatieLabel.Text = $"Latitude: {locatie.Latitude}\nLongitude: {locatie.Longitude}";
+			}
+			else
+			{
+				LocatieLabel.Text = "Geen GPS-locatie gevonden.";
+			}
+		}
+		catch (Exception ex)
+		{
+			LocatieLabel.Text = "Er is iets misgegaan met de GPS.";
+
+			await DisplayAlertAsync(
+				"GPS-fout",
+				ex.Message,
+				"OK");
+		}
+	}
+
 
 }
