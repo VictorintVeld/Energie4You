@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Energie4You.MainPage"
+             Title="Energie4You">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="25" Spacing="18">
+
+            <Label Text="Energie4You"
+                   FontSize="30"
+                   FontAttributes="Bold"
+                   TextColor="#512BD4"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Nieuwe defectmelding"
+                   FontSize="22"
+                   FontAttributes="Bold" />
+
+            <Label Text="Naam monteur" />
+            <Entry x:Name="MonteurEntry"
+                   Placeholder="Vul je naam in" />
+
+            <Label Text="Categorie" />
+            <Picker x:Name="CategoriePicker"
+                    Title="Selecteer een categorie">
+                <Picker.Items>
+                    <x:String>Grondkabels</x:String>
+                    <x:String>Luchtkabels</x:String>
+                    <x:String>Hoogspanningsmasten</x:String>
+                    <x:String>Schakelkasten</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Label Text="Omschrijving defect" />
+            <Editor x:Name="OmschrijvingEditor"
+                    Placeholder="Beschrijf het defect"
+                    HeightRequest="120" />
+
+            <Button Text="Melding opslaan"
+                    BackgroundColor="#512BD4"
+                    TextColor="White"
+                    Clicked="OnOpslaanClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
