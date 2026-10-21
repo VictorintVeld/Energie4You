@@ -65,7 +65,7 @@
             <Button Text="Melding opslaan"
                     BackgroundColor="#512BD4"
                     TextColor="White"
-                    Clicked="OnOpslaanClicked"/>
+                    Clicked="OnOpslaanClicked"/>     
 
         </VerticalStackLayout>
     </ScrollView>
