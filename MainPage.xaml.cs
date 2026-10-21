@@ -2,6 +2,7 @@
 using Microsoft.Maui.Devices.Sensors;
 using Energie4You.Models;
 using System.Text.Json;
+using Microsoft.Maui.ApplicationModel.Communication;
 namespace Energie4You;
 
 public partial class MainPage : ContentPage
@@ -9,11 +10,61 @@ public partial class MainPage : ContentPage
 	private double? latitude;
 	private double? longitude;
 	private string? fotoPad;
+	private DefectMelding? laatstOpgeslagenMelding;
+
 
 	public MainPage()
 	{
 		InitializeComponent();
+
+		SizeChanged += OnPageSizeChanged;
 	}
+
+	private void OnPageSizeChanged(object? sender, EventArgs e)
+	{
+		bool landscape = Width > Height;
+
+		if (Width <= 0 || Height <= 0)
+			return;
+
+		if (landscape)
+		{
+			FormulierGrid.ColumnDefinitions =
+				new ColumnDefinitionCollection
+				{
+				new ColumnDefinition(GridLength.Star),
+				new ColumnDefinition(GridLength.Star)
+				};
+
+			FormulierGrid.RowDefinitions =
+				new RowDefinitionCollection
+				{
+				new RowDefinition(GridLength.Auto)
+				};
+
+			Grid.SetRow(FotoGpsKolom, 0);
+			Grid.SetColumn(FotoGpsKolom, 1);
+		}
+		else
+		{
+			FormulierGrid.ColumnDefinitions =
+				new ColumnDefinitionCollection
+				{
+				new ColumnDefinition(GridLength.Star)
+				};
+
+			FormulierGrid.RowDefinitions =
+				new RowDefinitionCollection
+				{
+				new RowDefinition(GridLength.Auto),
+				new RowDefinition(GridLength.Auto)
+				};
+
+			Grid.SetRow(FotoGpsKolom, 1);
+			Grid.SetColumn(FotoGpsKolom, 0);
+		}
+	}
+
 
 	private async void OnOpslaanClicked(object? sender, EventArgs e)
 	{
@@ -72,6 +123,9 @@ public partial class MainPage : ContentPage
 
 		await File.WriteAllTextAsync(volledigPad, json);
 
+		laatstOpgeslagenMelding = melding;
+		EmailButton.IsEnabled = true;
+
 		await DisplayAlertAsync(
 			"Opgeslagen!",
 			$"De defectmelding is succesvol opgeslagen.\n\nBestand: {bestandsnaam}",
@@ -88,11 +142,6 @@ public partial class MainPage : ContentPage
 		LocatieLabel.Text = "Nog geen locatie opgehaald";
 		FotoPreview.Source = null;
 		FotoPreview.IsVisible = false;
-
-		await DisplayAlertAsync(
-			"Controle",
-			"De resetcode is uitgevoerd.",
-			"OK");
 	}
 
 	private async void OnFotoMakenClicked(object? sender, EventArgs e)
@@ -175,6 +224,78 @@ public partial class MainPage : ContentPage
 			await DisplayAlertAsync(
 				"GPS-fout",
 				ex.Message,
+				"OK");
+		}
+	}
+
+
+
+	private async void OnEmailClicked(object? sender, EventArgs e)
+	{
+		if (laatstOpgeslagenMelding == null)
+		{
+			await DisplayAlertAsync(
+				"Let op",
+				"Er is nog geen melding opgeslagen.",
+				"OK");
+			return;
+		}
+
+		try
+		{
+			if (!Email.Default.IsComposeSupported)
+			{
+				await DisplayAlertAsync(
+					"E-mail",
+					"Er is geen geschikte e-mailapp beschikbaar.",
+					"OK");
+				return;
+			}
+
+			var melding = laatstOpgeslagenMelding;
+
+			if (melding == null)
+			{
+				return;
+			}
+
+			string onderwerp = $"Defectmelding Energie4You - {melding.Categorie}";
+
+			string bericht =
+				$"Monteur: {melding.NaamMonteur}\n" +
+				$"Categorie: {melding.Categorie}\n" +
+				$"Omschrijving: {melding.Omschrijving}\n\n" +
+				$"GPS-locatie:\n" +
+				$"Latitude: {melding.Latitude}\n" +
+				$"Longitude: {melding.Longitude}";
+
+			var email = new EmailMessage
+			{
+				Subject = onderwerp,
+				Body = bericht
+			};
+
+			if (!File.Exists(melding.FotoPad))
+			{
+				await DisplayAlertAsync(
+					"Foto ontbreekt",
+					"De opgeslagen foto is niet gevonden.",
+					"OK");
+				return;
+			}
+
+			email.Attachments ??= new List<EmailAttachment>();
+
+			email.Attachments.Add(
+				new EmailAttachment(melding.FotoPad));
+
+			await Email.Default.ComposeAsync(email);
+		}
+		catch (Exception ex)
+		{
+			await DisplayAlertAsync(
+				"E-mailfout",
+				$"De e-mailapp kon niet worden geopend: {ex.Message}",
 				"OK");
 		}
 	}

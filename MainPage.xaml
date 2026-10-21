@@ -4,70 +4,108 @@
              x:Class="Energie4You.MainPage"
              Title="Energie4You">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="25"
-                             Spacing="18">
+    <Grid Padding="15"
+          RowDefinitions="Auto,*,Auto"
+          RowSpacing="10">
 
-            <Label Text="Energie4You"
-                   FontSize="30"
-                   FontAttributes="Bold"
-                   TextColor="#512BD4"
-                   HorizontalOptions="Center"/>
+        <Label Grid.Row="0"
+               Text="Energie4You"
+               FontSize="26"
+               FontAttributes="Bold"
+               TextColor="#512BD4"
+               HorizontalOptions="Center"/>
 
-            <Label Text="Nieuwe defectmelding"
-                   FontSize="22"
-                   FontAttributes="Bold"/>
+        <ScrollView Grid.Row="1">
+            <Grid x:Name="FormulierGrid"
+                  ColumnDefinitions="*"
+                  RowDefinitions="Auto,Auto"
+                  RowSpacing="15"
+                  ColumnSpacing="25">
 
-            <Label Text="Naam monteur"/>
-            <Entry x:Name="MonteurEntry"
-                   Placeholder="Vul je naam in"/>
+                <VerticalStackLayout x:Name="GegevensKolom"
+                                     Grid.Row="0"
+                                     Grid.Column="0"
+                                     Spacing="10">
 
-            <Label Text="Categorie"/>
-            <Picker x:Name="CategoriePicker"
-                    Title="Selecteer een categorie">
-                <Picker.Items>
-                    <x:String>Grondkabels</x:String>
-                    <x:String>Luchtkabels</x:String>
-                    <x:String>Hoogspanningsmasten</x:String>
-                    <x:String>Schakelkasten</x:String>
-                </Picker.Items>
-            </Picker>
+                    <Label Text="Nieuwe defectmelding"
+                           FontSize="20"
+                           FontAttributes="Bold"/>
 
-            <Label Text="Omschrijving defect"/>
-            <Editor x:Name="OmschrijvingEditor"
-                    Placeholder="Beschrijf het defect"
-                    HeightRequest="120"/>
+                    <Label Text="Naam monteur"/>
+                    <Entry x:Name="MonteurEntry"
+                           Placeholder="Vul je naam in"/>
 
-            <Label Text="Locatie van het defect"/>
+                    <Label Text="Categorie"/>
+                    <Picker x:Name="CategoriePicker"
+                            Title="Selecteer een categorie">
+                        <Picker.Items>
+                            <x:String>Grondkabels</x:String>
+                            <x:String>Luchtkabels</x:String>
+                            <x:String>Hoogspanningsmasten</x:String>
+                            <x:String>Schakelkasten</x:String>
+                        </Picker.Items>
+                    </Picker>
 
-            <Button Text="GPS-locatie ophalen"
-                    BackgroundColor="#247BA0"
-                    TextColor="White"
-                    Clicked="OnGpsClicked"/>
+                    <Label Text="Omschrijving defect"/>
+                    <Editor x:Name="OmschrijvingEditor"
+                            Placeholder="Beschrijf het defect"
+                            HeightRequest="100"/>
 
-            <Label x:Name="LocatieLabel"
-                   Text="Nog geen locatie opgehaald"
-                   FontSize="14"
-                   TextColor="Gray"/>
+                </VerticalStackLayout>
 
-            <Label Text="Foto van het defect"/>
+                <VerticalStackLayout x:Name="FotoGpsKolom"
+                                     Grid.Row="1"
+                                     Grid.Column="0"
+                                     Spacing="10">
 
-            <Button Text="Foto maken"
-                    BackgroundColor="#247BA0"
-                    TextColor="White"
-                    Clicked="OnFotoMakenClicked"/>
+                    <Label Text="Locatie van het defect"/>
 
-            <Image x:Name="FotoPreview"
-                   HeightRequest="200"
-                   Aspect="AspectFit"
-                   IsVisible="False"/>
+                    <Button Text="GPS-locatie ophalen"
+                            BackgroundColor="#247BA0"
+                            TextColor="White"
+                            Clicked="OnGpsClicked"/>
 
-            <Button Text="Melding opslaan"
+                    <Label x:Name="LocatieLabel"
+                           Text="Nog geen locatie opgehaald"
+                           FontSize="14"
+                           TextColor="Gray"/>
+
+                    <Label Text="Foto van het defect"/>
+
+                    <Button Text="Foto maken"
+                            BackgroundColor="#247BA0"
+                            TextColor="White"
+                            Clicked="OnFotoMakenClicked"/>
+
+                    <Image x:Name="FotoPreview"
+                           HeightRequest="150"
+                           Aspect="AspectFit"
+                           IsVisible="False"/>
+
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="10">
+
+            <Button Grid.Column="0"
+                    Text="Melding opslaan"
                     BackgroundColor="#512BD4"
                     TextColor="White"
-                    Clicked="OnOpslaanClicked"/>     
+                    Clicked="OnOpslaanClicked"/>
 
-        </VerticalStackLayout>
-    </ScrollView>
+            <Button x:Name="EmailButton"
+                    Grid.Column="1"
+                    Text="Melding e-mailen"
+                    BackgroundColor="#247BA0"
+                    TextColor="White"
+                    IsEnabled="False"
+                    Clicked="OnEmailClicked"/>
 
+        </Grid>
+
+    </Grid>
 </ContentPage>
